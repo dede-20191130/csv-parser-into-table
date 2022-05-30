@@ -1,6 +1,7 @@
 import { Box, Button, Container, Paper, styled, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { ChangeEventHandler, useState } from 'react';
 import Papa from 'papaparse';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Input = styled('input')({
   display: 'none',
@@ -33,6 +34,10 @@ function App() {
   return (
     <Container className="App">
       <Typography sx={{ fontSize: "2rem" }} variant='h1'>CSV Parser Into Table</Typography>
+      <Typography variant='caption'>
+        All URL strings in csv are transformed into a Link element.<br />
+        <a href="https://github.com/dede-20191130/csv-parser-into-table" target="_blank"><GitHubIcon ></GitHubIcon></a>
+      </Typography>
       <Box sx={{ textAlign: "center", mb: 3 }}>
         <label htmlFor="contained-button-file">
           <Input accept="text/csv" id="contained-button-file" type="file" onChange={handleChange} />
