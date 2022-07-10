@@ -11,6 +11,36 @@ function checkIfUrl(str: string) {
   return (/^https?\:\/\//.test(str));
 }
 
+function checkIfNumber(item: string) {
+  return !isNaN(Number(item));
+}
+
+function checkIfDateFormat(item: string) {
+  const d = new Date(item);
+  return d instanceof Date && !isNaN(d.valueOf());
+}
+
+function prettifyDate(dateString: string) {
+  const d = new Date(dateString);
+  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
+}
+
+function formattedCellContent(item: string) {
+  let returnContent: string | JSX.Element;
+  if (!(item.trim())) {
+    returnContent = "";
+  } else if (checkIfUrl(item.trim())) {
+    returnContent = <a href={item.trim()} target="_blank">{item.trim()}</a>
+  } else if (checkIfNumber(item.trim())) {
+    returnContent = Number(item).toLocaleString("en-US");
+  } else if (checkIfDateFormat(item.trim())) {
+    returnContent = prettifyDate(item.trim());
+  } else {
+    returnContent = item;
+  }
+  return returnContent;
+}
+
 function App() {
   const [fileData, setFileData] = useState<string[][]>([]);
   const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
@@ -26,6 +56,7 @@ function App() {
       header: false,
       complete: (results) => {
         setFileData(results.data);
+        console.log(results.data);
       }
     })
 
@@ -55,8 +86,7 @@ function App() {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 {fileDataLine.map((item) => {
-                  const cellContent = checkIfUrl(item.trim()) ? <a href={item} target="_blank">{item}</a> : item;
-                  return <TableCell key={item} align="center">{cellContent}</TableCell>
+                  return <TableCell key={item} align="left">{formattedCellContent(item)}</TableCell>
                 })}
 
               </TableRow>
